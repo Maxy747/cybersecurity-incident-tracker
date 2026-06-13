@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"time"
 
 	"github.com/marwans200/cyberguard/internal/database"
@@ -34,6 +35,9 @@ func (r *UserRepo) FindByEmail(email string) (*models.User, error) {
 	).Scan(&user.ID, &user.Name, &user.Email, &user.PasswordHash, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, nil
+	}
+	if err != nil {
+		log.Printf("[db error] FindByEmail: %v", err)
 	}
 	return user, err
 }
